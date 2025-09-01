@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فرم درخواست تیم استف - Spring Roleplay</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@latest/font-face.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #FFD700;
+      --primary-dark: #FFC000;
+      --dark: #1A1A1A;
+      --darker: #121212;
+      --light: #F5F5F5;
+      --gray: #444;
+      --light-gray: #666;
+      --success: #4CAF50;
+      --error: #F44336;
+      --radius: 12px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Vazirmatn, Tahoma, sans-serif;
+      background: linear-gradient(135deg, #1e1e2f 0%, #121218 100%);
+      color: var(--light);
+      min-height: 100vh;
+      padding: 2rem;
+      line-height: 1.6;
+      transition: var(--transition);
+    }
+
+    body.light-mode {
+      background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(30, 30, 30, 0.8);
+      color: var(--primary);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.5rem;
+      z-index: 100;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .light-mode .theme-toggle {
+      background: rgba(240, 240, 240, 0.9);
+      color: #333;
+    }
+
+    .form-box {
+      background: rgba(30, 30, 30, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+    }
+
+    .light-mode .form-box {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: #333;
+    }
+
+    .form-box:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.2) 100%);
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: var(--primary);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      transition: var(--transition);
+    }
+
+    .light-mode .logo {
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0.3) 100%);
+      border: 2px solid var(--primary-dark);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    h1 {
+      color: var(--primary);
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .light-mode h1 {
+      color: var(--primary-dark);
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .light-mode h2 {
+      color: var(--primary-dark);
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+      border-radius: 3px;
+    }
+
+    .light-mode h2::after {
+      background: linear-gradient(90deg, var(--primary-dark), transparent);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .light-mode label {
+      color: var(--primary-dark);
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--error);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray);
+      background: rgba(20, 20, 20, 0.7);
+      color: var(--light);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .light-mode input, 
+    .light-mode select, 
+    .light-mode textarea {
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      border: 1px solid #ccc;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+    }
+
+    .light-mode input:focus, 
+    .light-mode select:focus, 
+    .light-mode textarea:focus {
+      border-color: var(--primary-dark);
+      box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.3);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .info-text {
+      font-size: 0.85rem;
+      color: var(--light-gray);
+      margin-top: 0.3rem;
+    }
+
+    .light-mode .info-text {
+      color: #666;
+    }
+
+    .info-text a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .light-mode .info-text a {
+      color: var(--primary-dark);
+    }
+
+    .info-text a:hover {
+      text-decoration: underline;
+    }
+
+    .error-message {
+      color: var(--error);
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      display: none;
+    }
+
+    button[type="submit"] {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #000;
+      font-weight: 700;
+      padding: 1rem;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    button[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    }
+
+    button[type="submit"]:disabled {
+      background: var(--gray);
+      color: var(--light-gray);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .light-mode button[type="submit"]:disabled {
+      background: #ccc;
+      color: #666;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: var(--light-gray);
+      font-size: 0.9rem;
+    }
+
+    .light-mode .footer {
+      color: #666;
+    }
+
+    .footer a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .light-mode .footer a {
+      color: var(--primary-dark);
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* انیمیشن ها */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-box {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    .form-group {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.1s; }
+    .form-group:nth-child(2) { animation-delay: 0.2s; }
+    .form-group:nth-child(3) { animation-delay: 0.3s; }
+    .form-group:nth-child(4) { animation-delay: 0.4s; }
+    .form-group:nth-child(5) { animation-delay: 0.5s; }
+    .form-group:nth-child(6) { animation-delay: 0.6s; }
+    .form-group:nth-child(7) { animation-delay: 0.7s; }
+    .form-group:nth-child(8) { animation-delay: 0.8s; }
+
+    /* اسکرول بار سفارشی */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--darker);
+    }
+
+    .light-mode ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    .light-mode ::-webkit-scrollbar-thumb {
+      background: var(--primary-dark);
+    }
+
+    /* افکت های ویژه */
+    .glow {
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+    }
+
+    /* نتایج */
+    .result-container {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+      background: rgba(30, 30, 30, 0.9);
+      border-radius: var(--radius);
+      margin-top: 2rem;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .light-mode .result-container {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 215, 0, 0.5);
+    }
+
+    .score-display {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 1rem 0;
+    }
+
+    .light-mode .score-display {
+      color: var(--primary-dark);
+    }
+
+    .progress-bar {
+      height: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+
+    .light-mode .progress-bar {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      border-radius: 10px;
+      width: 0%;
+      transition: width 1s ease-in-out;
+    }
+
+    .light-mode .progress-fill {
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+    }
+
+    .result-message {
+      margin: 1rem 0;
+      font-size: 1.1rem;
+    }
+
+    .back-button {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 0.8rem 1.5rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: var(--transition);
+    }
+
+    .light-mode .back-button {
+      color: var(--primary-dark);
+      border: 1px solid var(--primary-dark);
+    }
+
+    .back-button:hover {
+      background: rgba(255, 215, 0, 0.1);
+    }
+
+    .light-mode .back-button:hover {
+      background: rgba(255, 215, 0, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <div class="container">
+    <div class="form-box">
+      <div class="header">
+        <div class="logo">
+          <i class="fas fa-crown"></i>
+        </div>
+        <h1 class="glow">Spring Roleplay</h1>
+        <h2>📋 فرم درخواست تیم استف</h2>
+      </div>
+
+      <form id="staffForm">
+        <div class="form-group">
+          <label for="fullname" class="required">نام شما</label>
+          <input id="fullname" name="fullname" type="text" placeholder="نام کامل خود را وارد کنید" required>
+          <div class="error-message" id="fullnameError">لطفاً نام خود را وارد کنید</div>
+        </div>
+
+        <div class="form-group">
+          <label for="steamname" class="required">اسم استیم شما (Steam Name)</label>
+          <input id="steamname" name="steamname" type="text" placeholder="نام اکانت استیم خود را وارد کنید" required>
+          <div class="error-message" id="steamnameError">لطفاً نام استیم خود را وارد کنید</div>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label for="age" class="required">سن شما</label>
+            <input id="age" name="age" type="number" min="10" max="80" placeholder="سن خود را وارد کنید" required>
+            <div class="error-message" id="ageError">لطفاً سن معتبر وارد کنید (۱۰ تا ۸۰)</div>
+          </div>
+
+          <div class="form-group">
+            <label for="playtime" class="required">تایم پلی شما در روز</label>
+            <input id="playtime" name="playtime" type="text" placeholder="مثال: 4-5 ساعت" required>
+            <div class="error-message" id="playtimeError">لطفاً تایم پلی روزانه خود را وارد کنید</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="experience" class="required">سابقه شما در تیم استف (اسم سرور رو بنویسید)</label>
+          <textarea id="experience" name="experience" placeholder="سابقه خود در تیم استف سرورهای دیگر را بنویسید. اگر سابقه ندارید، 'ندارم' بنویسید." required></textarea>
+          <div class="error-message" id="experienceError">لطفاً سابقه خود را وارد کنید</div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone" class="required">شماره تلفن شما (OOC)</label>
+          <input id="phone" name="phone" type="text" placeholder="شماره تلفن برای ارتباط ضروری" required>
+          <div class="error-message" id="phoneError">لطفاً شماره تلفن معتبر وارد کنید</div>
+        </div>
+
+        <div class="form-group">
+          <label for="knowledge" class="required">درصد تسلط شما به قوانین</label>
+          <select id="knowledge" name="knowledge" required>
+            <option value="">انتخاب کنید…</option>
+            <option value="20%">20%</option>
+            <option value="50%">50%</option>
+            <option value="70%">70%</option>
+            <option value="100%">100%</option>
+          </select>
+          <div class="error-message" id="knowledgeError">لطفاً میزان تسلط خود را انتخاب کنید</div>
+        </div>
+
+        <div class="form-group">
+          <label for="steamhex" class="required">Steam HEX</label>
+          <input id="steamhex" name="steamhex" type="text" placeholder="استیم هگز خود را وارد کنید" required>
+          <p class="info-text">از طریق سایت <a href="https://steamid.pro/" target="_blank">https://steamid.pro/</a> استیم هگز خود را پیدا کنید</p>
+          <div class="error-message" id="steamhexError">لطفاً استیم هگز معتبر وارد کنید</div>
+        </div>
+
+        <button type="submit" id="submitBtn">
+          <span id="submitText">ارسال فرم</span>
+          <span id="submitIcon"><i class="fas fa-paper-plane"></i></span>
+        </button>
+        
+        <div class="footer">
+          لینک دیسکورد: <a href="https://discord.gg/aZAQ2xef" target="_blank">https://discord.gg/aZAQ2xef</a>
+        </div>
+      </form>
+
+      <div class="result-container" id="resultContainer">
+        <div class="logo">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h2>نتایج درخواست شما</h2>
+        <div class="score-display" id="scoreDisplay">امتیاز: 0/100</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="result-message" id="resultMessage"></div>
+        <button class="back-button" id="backButton">بازگشت به فرم</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('staffForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const submitIcon = document.getElementById('submitIcon');
+    const themeToggle = document.getElementById('themeToggle');
+    const resultContainer = document.getElementById('resultContainer');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const progressFill = document.getElementById('progressFill');
+    const resultMessage = document.getElementById('resultMessage');
+    const backButton = document.getElementById('backButton');
+    
+    const KEY = 'spring_rp_staff_form';
+    const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1406691072943460442/zzplKfFdbO37oZQstGq2LaSnASJgvdxgw73Wa70kRM3DzWiyG7WlmSw4oJrtnnH37tfQ';
+    let isSubmitting = false;
+
+    // تغییر تم
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      if (document.body.classList.contains('light-mode')) {
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+      } else {
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+      }
+    });
+
+    // اعتبارسنجی فیلدها
+    function validateField(field, errorElement) {
+      if (!field.value.trim()) {
+        errorElement.style.display = 'block';
+        field.style.borderColor = 'var(--error)';
+        return false;
+      } else {
+        errorElement.style.display = 'none';
+        field.style.borderColor = '';
+        return true;
+      }
+    }
+
+    // اعتبارسنجی سن
+    function validateAge() {
+      const age = document.getElementById('age');
+      const error = document.getElementById('ageError');
+      
+      if (!age.value || age.value < 10 || age.value > 80) {
+        error.style.display = 'block';
+        age.style.borderColor = 'var(--error)';
+        return false;
+      } else {
+        error.style.display = 'none';
+        age.style.borderColor = '';
+        return true;
+      }
+    }
+
+    // بارگذاری داده‌های ذخیره شده
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem(KEY);
+      if (saved) {
+        const data = JSON.parse(saved);
+        Object.keys(data).forEach(k => {
+          if (form.elements[k]) {
+            form.elements[k].value = data[k];
+          }
+        });
+      }
+    });
+
+    // ذخیره موقت داده‌ها
+    form.addEventListener('input', () => {
+      const data = {};
+      Array.from(form.elements).forEach(el => {
+        if (el.name && el.type !== 'submit') {
+          data[el.name] = el.value;
+        }
+      });
+      localStorage.setItem(KEY, JSON.stringify(data));
+    });
+
+    // محاسبه نمره
+    function calculateScore(data) {
+      let score = 0;
+      
+      // امتیاز برای سن (حداکثر 20 امتیاز)
+      if (data.age >= 18 && data.age <= 35) score += 20;
+      else if (data.age > 35) score += 15;
+      else if (data.age >= 16) score += 10;
+      
+      // امتیاز برای تسلط به قوانین (حداکثر 30 امتیاز)
+      if (data.knowledge === '100%') score += 30;
+      else if (data.knowledge === '70%') score += 20;
+      else if (data.knowledge === '50%') score += 10;
+      
+      // امتیاز برای سابقه (حداکثر 30 امتیاز)
+      if (data.experience.toLowerCase() !== 'ندارم' && data.experience.trim() !== '') {
+        score += 30;
+      }
+      
+      // امتیاز برای تایم پلی (حداکثر 20 امتیاز)
+      if (data.playtime.includes('5') || data.playtime.includes('۶')) score += 20;
+      else if (data.playtime.includes('4') || data.playtime.includes('۴')) score += 15;
+      else if (data.playtime.includes('3') || data.playtime.includes('۳')) score += 10;
+      else score += 5;
+      
+      return score;
+    }
+
+    // تولید پیام بر اساس نمره
+    function generateResultMessage(score) {
+      if (score >= 80) {
+        return "تبریک! درخواست شما با موفقیت ارسال شد و شانس بالایی برای پذیرش دارید. به زودی با شما تماس خواهیم گرفت.";
+      } else if (score >= 60) {
+        return "درخواست شما ارسال شد. احتمال پذیرش شما متوسط است. در صورت نیاز با شما تماس خواهیم گرفت.";
+      } else if (score >= 40) {
+        return "درخواست شما ارسال شد. برای بهبود شانس پذیرش، پیشنهاد می‌کنید تسلط خود به قوانین را افزایش دهید.";
+      } else {
+        return "درخواست شما ارسال شد. پیشنهاد می‌کنید قبل از اقدام مجدد، تجربه و دانش خود را افزایش دهید.";
+      }
+    }
+
+    // ارسال فرم
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // اعتبارسنجی تمام فیلدها
+      const fullnameValid = validateField(document.getElementById('fullname'), document.getElementById('fullnameError'));
+      const steamnameValid = validateField(document.getElementById('steamname'), document.getElementById('steamnameError'));
+      const ageValid = validateAge();
+      const playtimeValid = validateField(document.getElementById('playtime'), document.getElementById('playtimeError'));
+      const experienceValid = validateField(document.getElementById('experience'), document.getElementById('experienceError'));
+      const phoneValid = validateField(document.getElementById('phone'), document.getElementById('phoneError'));
+      const knowledgeValid = validateField(document.getElementById('knowledge'), document.getElementById('knowledgeError'));
+      const steamhexValid = validateField(document.getElementById('steamhex'), document.getElementById('steamhexError'));
+      
+      if (!fullnameValid || !steamnameValid || !ageValid || !playtimeValid || 
+          !experienceValid || !phoneValid || !knowledgeValid || !steamhexValid) {
+        return;
+      }
+      
+      if (isSubmitting) return;
+      isSubmitting = true;
+      submitBtn.disabled = true;
+      submitText.textContent = 'در حال ارسال...';
+      submitIcon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+      try {
+        const data = {};
+        Array.from(form.elements).forEach(el => {
+          if (el.name && el.type !== 'submit') {
+            data[el.name] = el.value;
+          }
+        });
+
+        // محاسبه نمره
+        const score = calculateScore(data);
+        const message = generateResultMessage(score);
+
+        // ساخت پیام دیسکورد
+        const content = `
+**نام متقاضی:** ${data.fullname}
+**نام استیم:** ${data.steamname}
+**سن:** ${data.age}
+**تایم پلی روزانه:** ${data.playtime}
+**سابقه استفی:** ${data.experience}
+**شماره تلفن:** ${data.phone}
+**تسلط به قوانین:** ${data.knowledge}
+**Steam HEX:** ${data.steamhex}
+**امتیاز خودکار:** ${score}/100
+        `;
+
+        // ارسال به دیسکورد
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        const response = await fetch(DISCORD_WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content }),
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error('خطا در ارسال');
+
+        // نمایش نتایج
+        scoreDisplay.textContent = `امتیاز: ${score}/100`;
+        resultMessage.textContent = message;
+        
+        // پویش نوار پیشرفت
+        setTimeout(() => {
+          progressFill.style.width = `${score}%`;
+        }, 100);
+        
+        // نمایش بخش نتایج
+        form.style.display = 'none';
+        resultContainer.style.display = 'block';
+
+      } catch (err) {
+        console.error('خطا در ارسال فرم:', err);
+        submitText.textContent = 'خطا در ارسال';
+        submitIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+        
+        setTimeout(() => {
+          alert('⚠️ خطا در ارسال فرم. لطفاً اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید.');
+          submitText.textContent = 'ارسال فرم';
+          submitIcon.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        }, 1000);
+        
+      } finally {
+        setTimeout(() => {
+          isSubmitting = false;
+          submitBtn.disabled = false;
+        }, 1500);
+      }
+    });
+
+    // بازگشت به فرم
+    backButton.addEventListener('click', () => {
+      resultContainer.style.display = 'none';
+      form.style.display = 'block';
+      form.reset();
+      localStorage.removeItem(KEY);
+      progressFill.style.width = '0%';
+    });
+  </script>
+</body>
+</html>
